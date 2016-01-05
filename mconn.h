@@ -7,8 +7,13 @@
 #include "mqueue.h"
 #include "message.h"
 
-#define MAX_EPOLL_EVENT_SIZE 2000
+#define MAX_EPOLL_EVENT_SIZE 5000
 #define LISTEN_BACKLOG 1024
+#define SHARE_MEM_QUEUE_SIZE 1024 * 1024 * 100
+#define SHARE_MEM_QUEUE_ITEM 10000
+
+#define LOG(msg) cout<<msg<<endl
+
 using namespace std;
 
 /*
@@ -77,9 +82,35 @@ class MZConnSvr
         //请求入队列
         //响应出队列
         
-        int32_t handleInput(int32_t fd) { return 0; }
+        int32_t handleInput(int32_t fd); 
 
-        int32_t handleOutput(int32_t fd) { return 0; } 
+        int32_t handleOutput(int32_t fd)
+        {
+            LOG(fd);
+            return 0;
+        } 
+
+        /*
+        void setSendQueue(const ShmSendQueuePtr& queue)
+        {
+            _send_queue = queue;
+        }
+
+        ShmSendQueuePtr getSendQueue() const
+        {
+            return _send_queue;
+        }
+
+        void setRecvQueue(const ShmRecvQueuePtr& queue)
+        {
+            _recv_queue = queue;
+        }
+
+        ShmRecvQueuePtr getRecvQueue() const
+        {
+            return _recv_queue;
+        }
+        */
 
     private:
         //IP
@@ -98,10 +129,10 @@ class MZConnSvr
         int32_t _listen_fd;
 
         //接收队列
-        MZQueue<MZMessage> _recv_queue;
+        ShmSendQueue _recv_queue;
 
         //发送队列
-        MZQueue<MZMessage> _send_queue;
+        ShmRecvQueue _send_queue;
 
         //有名管道
         int32_t _fifo_fd;

@@ -49,3 +49,12 @@ int32_t MNetTool::setNonBlocking(int socket)
 
     return 0;
 }
+
+/*
+ * @brief 获取当前时间
+ *
+ */
+time_t MTimeTool::getCurrentTime()
+{
+    return time(NULL); 
+}

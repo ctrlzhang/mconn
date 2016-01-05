@@ -24,6 +24,12 @@
 //for bzeor
 #include <string.h>
 
+//for time
+#include <time.h>
+
+//EAGAIN
+#include <errno.h>
+
 using namespace std;
 
 /*
@@ -47,6 +53,15 @@ class MNetTool
 {
     public:
         static int32_t setNonBlocking(int socket);
+};
+
+/*
+ * 时间相关
+ */
+class MTimeTool
+{
+    public:
+        static time_t getCurrentTime();
 };
 
 #endif
